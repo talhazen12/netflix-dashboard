@@ -3,7 +3,8 @@ import Papa from 'papaparse';
 
 export const parseData = async () => {
     return new Promise((resolve, reject) => {
-        Papa.parse('/1.csv', {
+        const csvPath = import.meta.env.BASE_URL + '1.csv';
+        Papa.parse(csvPath, {
             download: true,
             header: true,
             skipEmptyLines: true,
