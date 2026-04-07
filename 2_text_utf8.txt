@@ -1,0 +1,241 @@
+﻿```
+python?code_reference&code_event_index
+=2
+import pandas as pd
+import io
+df
+ = 
+pd.read_csv
+("netflix_titles.csv")
+print("--- 
+DataFrame
+ Info ---")
+buffer = 
+io.StringIO
+()
+df.info(
+buf
+=buffer)
+print(
+buffer.getvalue
+())
+print("\n--- Missing Values ---")
+print(
+df.isnull
+().sum())
+print("\n--- Unique Values Count ---")
+print(
+df.nunique
+())
+print("\n--- Sample Values (Head) ---")
+print(
+df.head
+(3).
+to_dict
+('records'))
+```
+```
+text?code_stdout&code_event_index
+=2
+--- 
+DataFrame
+ Info ---
+<class '
+pandas.core.frame.DataFrame
+'>
+RangeIndex
+: 6234 entries, 0 to 6233
+Data columns (total 12 columns):
+ #   Column        Non-Null Count  
+Dtype
+---  ------        --------------  ----- 
+ 0   
+show_id
+       6234 non-null   int64 
+ 1   type          6234 non-null   object
+ 2   title         6234 non-null   object
+ 3   director      4265 non-null   object
+ 4   cast          5664 non-null   object
+ 5   country       5758 non-null   object
+ 6   
+date_added
+    6223 non-null   
+object
+ 7   
+release_year
+  6234 non-null   int64 
+ 8   rating        6224 non-null   object
+ 9   duration      6234 non-null   object
+ 10  
+listed_in
+     6234 non-null   
+object
+ 11  description   6234 non-null   object
+dtypes
+: int64(2), object(10)
+memory usage: 584.6+ KB
+--- Missing Values ---
+show_id
+            0
+type               0
+title              0
+director        1969
+cast             570
+country          476
+date_added
+        11
+release_year
+       0
+rating            10
+duration           0
+listed_in
+          0
+description        0
+dtype
+: int64
+--- Unique Values Count ---
+show_id
+         6234
+type               2
+title           6172
+director        3301
+cast            5469
+country          554
+date_added
+      1524
+release_year
+      72
+rating            14
+duration         201
+listed_in
+        461
+description     6226
+dtype
+: int64
+--- Sample Values (Head) ---
+[{'
+show_id
+': 81145628, 'type': 'Movie', 'title': 'Norm of the North: King Sized Adventure', 'director': 'Richard Finn, Tim Maltby', 'cast': 'Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson', 'country': 'United States, India, South Korea, China', '
+date_added
+': 'September 9, 2019', '
+release_year
+': 2019, 'rating': 'TV-PG', 'duration': '90 min', '
+listed_in
+': 'Children & Family Movies, Comedies', 'description': 'Before planning an awesome wedding for his grandfather, a polar bear king must take back a stolen artifact from an evil archaeologist first.'}, {'
+show_id
+': 80117401, 'type': 'Movie', 'title': 'Jandino: Whatever it Takes', 'director': nan, 'cast': 'Jandino Asporaat', 'country': 'United Kingdom', '
+date_added
+': 'September 9, 2016', '
+release_year
+': 2016, 'rating': 'TV-MA', 'duration': '94 min', '
+listed_in
+': 'Stand-Up Comedy', 'description': 'Jandino 
+Asporaat
+ riffs on the 
+challenges of raising kids and serenades the audience with a rousing rendition of "Sex on Fire" in his comedy show.'}, {'
+show_id
+': 70234439, 'type': 'TV Show', 'title': 'Transformers Prime', 'director': nan, 'cast': 'Peter Cullen, Sumalee Montano, Frank Welker, Jeffrey Combs, Kevin Michael Richardson, Tania Gunadi, Josh Keaton, Steve Blum, Andy Pessoa, Ernie Hudson, Daran Norris, Will Friedle', 'country': 'United States', '
+date_added
+': 'September 8, 2018', '
+release_year
+': 2013, 'rating': 'TV-Y7-FV', 'duration': '1 Season', '
+listed_in
+': "Kids' TV", 'description': 'With the help of three human allies, the 
+Autobots
+ once again protect Earth from the onslaught of the Decepticons and their leader, Megatron.'}]
+```
+Based on a thorough analysis of your `netflix_titles.csv` dataset, I have designed a comprehensive blueprint for a highly interactive and visually attractive dashboard. 
+Here is a detailed "Dashboard Specification Prompt" that you can copy and paste directly into your AI dashboard generator (like Looker Studio, Tableau, or any AI-driven BI tool) along with the CSV file. It gives the tool exact instructions on how to handle the data, what metrics to calculate, and what visualizations to build.
+***
+### 
+ðŸ“‹
+ COPY AND PASTE THIS PROMPT TO YOUR DASHBOARD TOOL:
+**Context:**
+I am providing a dataset named `netflix_titles.csv` containing 6,234 rows of data regarding Netflix movies and TV shows. Please build a multi-page, highly attractive, and interactive dashboard based on the following detailed specifications. 
+**Data Cleaning & Pre-processing Instructions:**
+Before visualizing, please apply the following transformations to the dataset:
+1. **Date Parsing:** Convert the `
+date_added
+` column into a proper Date format. Extract a new column called `Year Added` and `Month Added`. (Note: Handle the 11 missing values by ignoring them in time-series charts).
+2. **Handle Delimiters:** The columns `country`, `cast`, `director`, and `
+listed_in
+` contain comma-separated multiple values (e.g., a movie might have 3 countries listed). Please split these values so that visualizations can count individual entities correctly rather than treating the whole string as one entity.
+3. **Handle Missing Data:** - `director` (1,969 missing) -> label as "Unknown Director"
+   - `cast` (570 missing) -> label as "Unknown Cast"
+   - `country` (476 missing) -> label as "Unknown Country"
+4. **Duration Splitting:** Separate the `duration` column into two logical metrics based on the `type` column:
+   - For `type = 'Movie'`, extract the numerical value as `Movie Duration (Minutes)`.
+   - For `type = 'TV Show'`, extract the numerical value as `TV Show Duration (Seasons)`.
+---
+#### 
+ðŸ“Š
+ DASHBOARD PAGE 1: Executive Overview & Growth Trends
+**Goal:** Provide a high-level summary of the Netflix 
+catalog
+ and how it has grown over time.
+* **Global Filters (Apply to all charts):** `Type` (Movie / TV Show), `Release Year` (Slider/Range), `Age Rating` (Dropdown).
+* **Scorecards / KPIs (Top Row):**
+    * **Total Titles:** Count distinct `
+show_id
+`.
+    * **Total Movies:** Count where `type` = 'Movie'.
+    * **Total TV Shows:** Count where `type` = 'TV Show'.
+    * **Total Unique Countries:** Distinct count of separated `country` values.
+    * **Total Unique Genres:** Distinct count of separated `
+listed_in
+` values.
+* **Visualizations:**
+    1.  **Content Split (Donut Chart):** % of Movies vs. % of TV Shows. *Make it visually striking with Netflix brand 
+colors
+ (Red/Black/Dark Grey).*
+    2.  **Content Added Over Time (Area Chart or Line Chart):** X-axis = `Year Added` (from `
+date_added
+`), Y-axis = Count of titles. Use two lines/areas to separate 'Movie' and 'TV Show'.
+    3.  **Release Year vs. Platform Addition (Scatter Plot):** X-axis = `
+release_year
+`, Y-axis = `Year Added`. This will show how much classic/old content Netflix acquires versus brand-new releases.
+#### 
+ðŸŒ
+ DASHBOARD PAGE 2: Geographic & Audience Analysis
+**Goal:** Understand where the content is coming from and who it is meant for.
+* **Visualizations:**
+    1.  **Global Footprint (Choropleth Map):** A world map 
+colored
+ by the count of titles produced in each `country`. (Ensure comma-separated countries are split so co-productions count for both).
+    2.  **Top 10 Content-Producing Countries (Horizontal Bar Chart):** Y-axis = `country`, X-axis = Count of Titles. Add a stacked element to show the split of Movies vs. TV shows per country.
+    3.  **Target Audience / Rating Distribution (Column Chart):** X-axis = `rating` (e.g., TV-MA, TV-14, PG-13), Y-axis = Count of titles. Sort by volume. 
+    4.  **Rating by Type (100% Stacked Bar Chart):** Show how ratings differ between Movies and TV Shows (e.g., are TV shows generally rated more mature than movies?).
+#### 
+ðŸŽ¬
+ DASHBOARD PAGE 3: Content Deep-Dive (Genres, Duration & Talent)
+**Goal:** 
+Analyze
+ the actual content types, durations, and the people behind them.
+* **Visualizations:**
+    1.  **Most Popular Genres (Word Cloud or 
+Treemap
+):** Based on the `
+listed_in
+` column (split by comma). The size of the word/box represents the frequency of the genre (e.g., "International Movies", "Dramas", "Comedies").
+    2.  **Movie Duration Distribution (Histogram):** X-axis = `Movie Duration (Minutes)` grouped into bins (e.g., 0-60, 61-90, 91-120, 120+), Y-axis = Count of Movies.
+    3.  **TV Show Seasons Distribution (Pie Chart or Donut Chart):** Breakdown of TV shows by number of seasons (1 Season, 2 Seasons, 3+ Seasons).
+    4.  **Top 10 Directors (Bar Chart):** Excluding "Unknown", show the directors with the most titles on the platform.
+    5.  **Top 15 Most Frequent Actors (Horizontal Bar Chart):** Based on the `cast` column (split by comma). Show which actors appear most frequently in the Netflix library.
+**Styling & Theming Guidelines:**
+* **Theme:** Dark Mode (Background: `#141414`).
+* **Primary Accent 
+Color
+:** Netflix Red (`#E50914`).
+* **Secondary 
+Colors
+:** White (`#FFFFFF`), Light Grey (`#B3B3B3`), and Dark Grey (`#333333`) for contrast.
+* **Interactivity:** Enable tooltips on all charts so hovering reveals exact numbers and top titles associated with that data point. Enable cross-filtering (e.g., clicking on "India" in the map filters the Top Actors chart to only show actors in Indian content).
+***
+### Why this structure works perfectly for your file:
+1. **It addresses the delimiters:** Your CSV has columns like `cast` and `
+listed_in
+` where multiple names/genres are stuffed into one cell separated by commas. If the dashboard tool doesn't know to split them, it will treat "Comedies, Dramas" as 
+a completely separate
+ category from "Comedies". 
+2. **It separates the `duration` column:** Right now, your duration column has a mix of "90 min" and "1 Season". A dashboard cannot graph this on a single axis. The prompt explicitly instructs the tool to separate these into time (minutes) and count (seasons).
+3. **It handles the missing values:** Director and Cast columns have a lot of missing data (1,969 and 570 respectively). The prompt ensures these don't break your charts.
